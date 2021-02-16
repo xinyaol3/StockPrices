@@ -1,0 +1,45 @@
+﻿@model IEnumerable<StockPrices.Data.Stock>
+
+@{
+	ViewData["Title"] = "Filter";
+}
+
+<h1>Select By Ticker</h1>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Ticker)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.FullName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Price)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Ticker)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.FullName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Price)
+				</td>
+				<td>
+					@Html.ActionLink("Details", "Details", new { ticker = item.Ticker })
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>

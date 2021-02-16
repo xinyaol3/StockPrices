@@ -48,5 +48,45 @@ namespace StockPrices.WebUI.Controllers
 
             return View(new Stock());
         }
+        public async Task<IActionResult> Filter(string ticker)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, "Stock");
+            var client = _clientFactory.CreateClient("stockapi");
+
+            var response = await client.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                var stocks = JsonConvert.DeserializeObject<List<Stock>>(responseString);
+                List<Stock> res = new List<Stock>();
+                for (int i = 0; i < stocks.Count; i++)
+                {
+                    if (stocks[i].Ticker==ticker)
+                    {
+                        res.Add(stocks[i]);
+                    }
+                }
+                return View(res);
+            }
+            return View(new List<Stock>());
+        }
+        public async void CreateNew(string ticker,string fullname,double price)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, $"Stock/AddStock/{ticker}/{fullname}/{price}");
+            var client = _clientFactory.CreateClient("stockapi");
+
+            var response = await client.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                var stock = JsonConvert.DeserializeObject<List<Stock>>(responseString);
+                Stock st = new Stock();
+                st.Ticker = ticker;
+                st.FullName = fullname;
+                st.Price = price;
+                stock.Add(st);
+            }
+
+        }
     }
 }

@@ -1,45 +1,52 @@
 ﻿@model IEnumerable<StockPrices.Data.Stock>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+	<a asp-controller="Stock" asp-action="CreateNew" method="post">Create New</a>
 </p>
+<form asp-controller="Stock" asp-action="Filter" method="get">
+	<p>
+		Ticker: <input type="text" id="SearchString" name="SearchString" />
+		<input type="button" value="Search" onclick = "location.href='@Url.Action("Filter", "Stock")?ticker=' +$('#SearchString').val()" />
+	</p>
+</form>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Ticker)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ticker)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.ActionLink("Details", "Details", new {  ticker=item.Ticker  })
-            </td>
-        </tr>
-}
-    </tbody>
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Ticker)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.FullName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Price)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.Ticker)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.FullName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Price)
+			</td>
+			<td>
+				@Html.ActionLink("Details", "Details", new { ticker = item.Ticker })
+			</td>
+		</tr>
+	}
+	</tbody>
 </table>
